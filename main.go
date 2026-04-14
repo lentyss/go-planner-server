@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/lentyss/go-planner-server/pkg/api"
 	"github.com/lentyss/go-planner-server/pkg/db"
 )
 
@@ -27,6 +28,8 @@ func main() {
 		logger.Fatalf("Failed to initialize database: %v", err)
 	}
 	defer schema.Close()
+
+	api.Init()
 
 	webDir := "./web"
 	if _, err := os.Stat(webDir); os.IsNotExist(err) {
