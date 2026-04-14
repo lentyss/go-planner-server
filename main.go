@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/lentyss/go-planner-server/pkg/db"
 )
 
 func main() {
@@ -14,6 +16,17 @@ func main() {
 	if port == "" {
 		port = "7540"
 	}
+
+	dbFile := os.Getenv("TODO_DBFILE")
+	if dbFile == "" {
+		dbFile = "scheduler.db"
+	}
+
+	schema, err := db.Init(dbFile)
+	if err != nil {
+		logger.Fatalf("Failed to initialize database: %v", err)
+	}
+	defer schema.Close()
 
 	webDir := "./web"
 	if _, err := os.Stat(webDir); os.IsNotExist(err) {
