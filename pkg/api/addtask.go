@@ -11,9 +11,11 @@ import (
 )
 
 func writeJSON(w http.ResponseWriter, status int, data any) {
-	w.Header().Set("Content-Type", "application/json; charset=UFT-8")
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(data)
+	if data != nil {
+		json.NewEncoder(w).Encode(data)
+	}
 }
 
 func checkDate(task *db.Task) error {

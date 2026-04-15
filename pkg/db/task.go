@@ -53,6 +53,42 @@ func UpdateTask(task *Task) error {
 	return nil
 }
 
+func UpdateDate(id string, date string) error {
+	query := `UPDATE scheduler SET date = ? WHERE id = ?`
+	res, err := DB.Exec(query, date, id)
+	if err != nil {
+		return err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		return fmt.Errorf("заача не найдена")
+	}
+
+	return nil
+}
+
+func DeleteTask(id string) error {
+	query := `DELETE FROM scheduler WHERE id = ?`
+	res, err := DB.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if count == 0 {
+		return fmt.Errorf("задачи не найденго")
+	}
+	return nil
+}
+
 func Tasks(limit int, search string) ([]Task, error) {
 	var rows *sql.Rows
 	var err error
