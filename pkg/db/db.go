@@ -24,9 +24,10 @@ func Init(dbFile string) (*sql.DB, error) {
 	_, err := os.Stat(dbFile)
 	install := err != nil
 
-	DB, err := sql.Open("sqlite", dbFile)
-	if err != nil {
-		return nil, err
+	var openErr error
+	DB, openErr = sql.Open("sqlite", dbFile)
+	if openErr != nil {
+		return nil, openErr
 	}
 
 	if err = DB.Ping(); err != nil {
